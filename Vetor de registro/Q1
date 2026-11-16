@@ -1,5 +1,52 @@
 #include <stdio.h>
 
-int main(void) {
+struct registro {
+    int codigo;
+    char nome[40];
+    char descricao[40];
+    float valor;
+    int quantidade;
+};
 
+int cadastro(struct registro c[40]);
+int modificar(struct registro c[40]);
+int estoque1(struct registro c[40]);
+
+int main(void) {
+    struct registro estoque[40];
+    printf("Digite: [cadastro] para realizar o cadastro. \n"
+            "Digite: [modificar] para realizar uma alteração no banco de dados. \n"
+            "Digite: [valor] para ver o valor de um item. \n"
+            "Digite: [quantidade] para ver a quantidade de um item. \n"
+            "Digite: [comprar] para comprar algum item. \n"
+            "Digite: [atualizar] para atualizar o estoque. \n"
+            "Digite: [estoque1] para ver o relatório de estoque. \n"
+            "Digite: [esotque0] para ver o relatório de itens sem estoque. \n");
+    char entrada[10];
+    scanf("%s", entrada);
 }
+
+int cadastro(struct registro c[40]) {
+    i = 0;
+    for (i = 0; i < 40; i ++){
+
+    printf("Insira o código do objeto a ser cadastrado");
+    scanf("%d", &c[i].codigo);
+    printf("Insira o nome do objeto");
+    scanf("%s", &c[i].nome);
+    printf("Insira a descrição do produto");
+    scanf("%s", &c[i].descricao);
+    printf("Insira o valor do produto");
+    scanf("%d", &c[i].valor);
+    printf("Insicra a quantidade do produto");
+    scanf("%d", &c[i].quantidade);
+    }
+    return 1;
+}
+
+int modificar(struct registro c[40]){
+    printf("Digite o código do item a ser modificado");
+    while ("%d" != ) 
+}
+
+int estoque1(struct registro c[40]); {
