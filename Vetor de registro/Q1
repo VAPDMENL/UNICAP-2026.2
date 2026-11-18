@@ -11,6 +11,9 @@ struct registro {
 int cadastro(struct registro c[40]);
 int modificar(struct registro c[40]);
 int estoque1(struct registro c[40]);
+int estoque2(struct registro c[40]);
+int vendas(struct registro c[40]);
+int estoque_Zero(struct registro c[40]);
 
 int main(void) {
     struct registro estoque[40];
@@ -27,8 +30,7 @@ int main(void) {
 }
 
 int cadastro(struct registro c[40]) {
-    i = 0;
-    for (i = 0; i < 40; i ++){
+    for (int i = 0; i <= 40; i ++){
 
     printf("Insira o código do objeto a ser cadastrado");
     scanf("%d", &c[i].codigo);
@@ -46,7 +48,73 @@ int cadastro(struct registro c[40]) {
 
 int modificar(struct registro c[40]){
     printf("Digite o código do item a ser modificado");
-    while ("%d" != ) 
+    int i=0;
+    while (i>=0 && i<=40){
+        if ("%d" == c[i].codigo){
+            printf("Insira o número de unidades.");
+            scanf("%d", &c[i].quantidade);
+            i = -1;
+    }
+        else{
+            (i++);
+        }
+    }
+    return 1;
 }
 
-int estoque1(struct registro c[40]); {
+int estoque1(struct registro c[40]) {
+    printf("Insira o código de produto:");
+    for(int i=0; i<=40; i++){
+        if ("%d" == c[i].codigo){
+            printf("O produto possui o valor de:", c[i].valor);
+        } else {printf("Produto não encontrado.");}
+        
+        return  1;
+    }
+}
+
+int estoque2(struct registro c[40]) {
+    printf("Insira o código de produto:");
+    for(int i=0; i<=40; i++){
+        if ("%d" == c[i].codigo){
+            printf("O produto possui um estoque de:", c[i].quantidade);
+        }else {printf("Produto não encontrado.");}
+        
+        return  1;
+    }
+}
+
+
+int vendas(struct registro c[40]) {
+    printf("Diga o código do produto vendido:");
+    for (int i=0; i<=40; i++) {
+        if ("%d" == c[i].codigo){
+            printf("Diga a quantidade desejada:");
+            int quantidadeAlvo;
+            scanf("%d", &quantidadeAlvo);
+                if (c[i].quantidade >= quantidadeAlvo){
+                    printf("Venda realizada com sucesso.", quantidadeAlvo, "itens por", quantidadeAlvo*c[i].valor);
+                    c[i].quantidade = c[i].quantidade - quantidadeAlvo;
+            }   else {printf("Não há estoque suficiente.");}
+                return 1;
+        }else {
+            printf("Produto não encontrado.");
+        }
+        
+        return 1;
+    }
+    }
+
+int estoque_Total(struct registro c[40]){
+    for (int i = 0; i <=40; i++){
+        printf(c[i].codigo, c[i].descricao);
+    }
+}
+
+int estoque_Zero(struct registro c[40]){
+    for (int i = 0; i <=40; i++){
+        if (c[i].quantidade == 0) {
+            printf(c[i].codigo, c[i].descricao);
+        }
+    }
+}
