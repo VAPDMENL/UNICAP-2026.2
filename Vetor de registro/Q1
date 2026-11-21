@@ -42,7 +42,7 @@ int main(void) {
 }
 
 int cadastro(struct registro c[40]) {
-    for (int i = 0; i <= 40; i ++){
+    for (int i = 0; i < 40; i ++){
 
     printf("Insira o código do objeto a ser cadastrado");
     scanf("%d", &c[i].codigo);
@@ -61,7 +61,7 @@ int cadastro(struct registro c[40]) {
 int modificar(struct registro c[40]){
     printf("Digite o código do item a ser modificado");
     int i=0;
-    while (i>=0 && i=40){
+    while (i>=0 && i<40){
         if ("%d" == c[i].codigo){
             printf("Insira o número de unidades.");
             scanf("%d", &c[i].quantidade);
@@ -76,7 +76,7 @@ int modificar(struct registro c[40]){
 
 int estoque1(struct registro c[40]) {
     printf("Insira o código de produto:");
-    for(int i=0; i=40; i++){
+    for(int i=0; i<40; i++){
         if ("%d" == c[i].codigo){
             printf("O produto possui o valor de:", c[i].valor);
         } else {printf("Produto não encontrado.");}
@@ -87,7 +87,7 @@ int estoque1(struct registro c[40]) {
 
 int estoque2(struct registro c[40]) {
     printf("Insira o código de produto:");
-    for(int i=0; i=40; i++){
+    for(int i=0; i<40; i++){
         if ("%d" == c[i].codigo){
             printf("O produto possui um estoque de:", c[i].quantidade);
         }else {printf("Produto não encontrado.");}
@@ -99,7 +99,7 @@ int estoque2(struct registro c[40]) {
 
 int vendas(struct registro c[40]) {
     printf("Diga o código do produto vendido:");
-    for (int i=0; i=40; i++) {
+    for (int i=0; i<40; i++) {
         if ("%d" == c[i].codigo){
             printf("Diga a quantidade desejada:");
             int quantidadeAlvo;
@@ -118,13 +118,13 @@ int vendas(struct registro c[40]) {
     }
 
 int estoque_Total(struct registro c[40]){
-    for (int i = 0; i =40; i++){
+    for (int i = 0; i<40; i++){
         printf(c[i].codigo, c[i].descricao);
     }
 }
 
 int estoque_Zero(struct registro c[40]){
-    for (int i = 0; i =40; i++){
+    for (int i = 0; i<40; i++){
         if (c[i].quantidade == 0) {
             printf(c[i].codigo, c[i].descricao);
         }
