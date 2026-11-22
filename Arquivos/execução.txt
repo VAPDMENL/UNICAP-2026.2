@@ -1,0 +1,85 @@
+====================================================================
+SISTEMA DE CONTROLE DE ESTOQUE E VENDAS (ARQUIVOS BINARIOS EM C)
+GUIA DE EXECUCAO E LOG DE TESTES
+====================================================================
+
+1. COMPILACAO E EXECUCAO
+--------------------------------------------------------------------
+No terminal, na mesma pasta do arquivo sistema.c:
+
+  gcc -Wall -Wextra sistema.c -o sistema
+  ./sistema          (Linux / macOS)
+  sistema.exe        (Windows)
+
+Arquivos binarios gerados/utilizados na execucao:
+  - produtos.dat
+  - vendas.dat
+  - temp.dat (criado e removido automaticamente durante remocoes)
+
+
+2. MENU DE OPCOES DISPONIVEIS
+--------------------------------------------------------------------
+  1 - Cadastrar produto
+  2 - Listar produtos
+  3 - Atualizar produto
+  4 - Remover produto
+  5 - Cadastrar venda
+  6 - Listar vendas
+  7 - Exibir venda detalhada
+  8 - Remover venda
+  0 - Sair
+
+
+3. EXEMPLO DE EXECUCAO E VALIDACAO DE REGRAS (OBS1, OBS2 E IDs)
+--------------------------------------------------------------------
+
+[Passo 1] Cadastrar produtos (Opcao 1)
+  - Produto ID 1: "Caderno 10 Materias" | Preco: 25.50 | Estoque inicial: 10
+  - Produto ID 2: "Caneta Esferografica Azul" | Preco: 3.00 | Estoque inicial: 3
+  - Produto ID 3: "Mochila Escolar" | Preco: 120.00 | Estoque inicial: 0
+
+[Passo 2] Listar produtos (Opcao 2)
+  ID: 1 | Descrição: Caderno 10 Materias | Preço: 25.50 | Estoque: 10
+  ID: 2 | Descrição: Caneta Esferografica Azul | Preço: 3.00 | Estoque: 3
+  ID: 3 | Descrição: Mochila Escolar | Preço: 120.00 | Estoque: 0
+
+[Passo 3] Testar OBS1 - Estoque zerado (Opcao 5)
+  Cliente : Ana Silva
+  Data (dd/mm/aaaa) : 22/11/2026
+  Id do produto (0 para encerrar): 3
+  -> Resultado esperado: "Estoque vazio." (nao permite venda negativa)
+
+[Passo 4] Testar OBS2 - Quantidade maior que o estoque (Opcao 5)
+  Id do produto (0 para encerrar): 2
+  Quantidade : 5
+  -> Resultado esperado: pergunta se deseja levar o restante (3) e zerar o estoque.
+     - Se responder 1: leva 3 unidades, registra preco unitario 3.00 e zera o estoque do ID 2.
+     - Se responder 0: cancela a adicao desse item e mantem o estoque intacto.
+
+[Passo 5] Adicionar segundo item e encerrar venda (Opcao 5)
+  Id do produto (0 para encerrar): 1
+  Quantidade : 2
+  Id do produto (0 para encerrar): 0
+  -> Resultado esperado: "Confirmado." e venda gravada em vendas.dat com estoque do ID 1 atualizado para 8.
+
+[Passo 6] Listar vendas (Opcao 6)
+  ID: 1 | Cliente: Ana Silva | Data: 22/11/2026 | Quantidade: 2
+
+[Passo 7] Exibir venda detalhada - Cruzamento Venda <-> Produto por ID (Opcao 7)
+  ID da venda : 1
+  Id : 1 | Cliente : Ana Silva | Data : 22/11/2026| Quantidade : 2
+  Descrição : Caneta Esferografica Azul| Data: 22/11/2026| Quantidade : 3| Preço : 3.00
+  Descrição : Caderno 10 Materias| Data: 22/11/2026| Quantidade : 2| Preço : 25.50
+  Total da venda : 60.00
+
+[Passo 8] Atualizar produto (Opcao 3) e Remover produto/venda (Opcoes 4 e 8)
+  - Opcao 3: altera preco e/ou estoque sobrescrevendo o registro no arquivo via fseek/fwrite.
+  - Opcao 4: copia os demais registros para temp.dat, remove produtos.dat e renomeia temp.dat para produtos.dat.
+  - Ao abrir a venda detalhada (Opcao 7) apos remover um produto comprado nela:
+    itens com ID removido exibem "Produto não encontrado (ID X)".
+  - Opcao 8: remove uma venda usando o mesmo fluxo com temp.dat.
+
+[Passo 9] Encerrar e verificar persistencia (Opcao 0)
+  - Digite 0 para sair.
+  - Abra o programa novamente e use as opcoes 2 e 6 para confirmar que os dados continuam salvos em disco.
+====================================================================
