@@ -303,6 +303,9 @@ static void cadastrarVenda(void) {
         } else if (resp == 0) {
             continue;
         }
+        else {
+            printf("Valor inválido.\n");
+            continue;}
         }
         int idx = v.qtdItens;
         v.idsProdutos[idx] = prod.id;
@@ -346,7 +349,7 @@ int main(void) {
         atualizarProduto(lerInt("ID do produto : "));
         break;
         case 4 : 
-        removerProduto(lerInt("ID do oproduto : "));
+        removerProduto(lerInt("ID do produto : "));
         break;
         case 5 : 
         cadastrarVenda();
