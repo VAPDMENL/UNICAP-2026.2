@@ -300,7 +300,7 @@ static void cadastrarVenda(void) {
         int resp =lerInt("Estoque insuficiente. Deseja levar o restante e zerar o estoque? (1 : Sim | 0 :Não ): \n");
         if (resp == 1) {
             qtd = prod.estoque;
-        } else {
+        } else if (resp == 0) {
             continue;
         }
         }
