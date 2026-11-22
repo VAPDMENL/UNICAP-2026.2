@@ -8,6 +8,7 @@
 
 *entrada padrão*  
 [entrada.txt](entrada.txt)  
-## Participantes  
+
+## Participantes
 *Vitor Araújo Pacheco de Miranda Nunes Leite | 863756*  
 *João Gabriel Gomes de Sousa | 864177*   
