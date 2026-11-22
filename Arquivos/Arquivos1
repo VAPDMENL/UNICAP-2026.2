@@ -1,1 +1,158 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define ARQ_PRODUTOS "produtos.dat"
+#define ARQ_VENDAS   "vendas.dat"
+#define ARQ_TEMP     "temp.dat"
+
+#define TAM_DESC     50
+#define TAM_CLIENTE  50
+#define TAM_DATA     11   /* dd/mm/aaaa */
+#define MAX_ITENS    10   /* produtos distintos por venda */
+
+/* ------------------------------------------------------------------ */
+/* Registros                                                           */
+/* O campo "id" e sempre o PRIMEIRO membro (usado na remocao generica) */
+/* ------------------------------------------------------------------ */
+
+typedef struct {
+    int   id;
+    char  descricao[TAM_DESC];
+    float preco;
+    int   estoque;
+} Produto;
+
+typedef struct {
+    int   id;
+    char  cliente[TAM_CLIENTE];
+    char  data[TAM_DATA];
+    int   qtdItens;                  /* quantos itens do vetor estao em uso */
+    int   idsProdutos[MAX_ITENS];    /* vetor de IDs (relacionamento) */
+    int   quantidades[MAX_ITENS];    /* quantidade vendida de cada produto */
+    float precos[MAX_ITENS];         /* preco unitario no momento da venda */
+} Venda;
+
+/* ------------------------------------------------------------------ */
+/* Entrada de dados                                                    */
+/* ------------------------------------------------------------------ */
+
+static void lerTexto(const char *msg, char *dest, size_t tam) {
+    printf("%s", msg);
+    if (fgets(dest, (int)tam, stdin) == NULL) {
+        exit(0); /* fim da entrada */
+    }
+    size_t n = strlen(dest);
+    if (n > 0 && dest[n - 1] == '\n') {
+        dest[n - 1] = '\0';
+    } else {
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF) { /* descarta o excesso */ }
+    }
+}
+
+static int lerInt(const char *msg) {
+    char buf[64], *fim;
+    long v;
+    while (1) {
+        lerTexto(msg, buf, sizeof buf);
+        v = strtol(buf, &fim, 10);
+        if (fim != buf && *fim == '\0') return (int)v;
+        printf("Valor invalido. Tente novamente.\n");
+    }
+}
+
+static int lerIntNaoNegativo(const char *msg) {
+    int v;
+    while ((v = lerInt(msg)) < 0) printf("O valor nao pode ser negativo.\n");
+    return v;
+}
+
+static float lerPreco(const char *msg) {
+    char buf[64], *fim;
+    float v;
+    while (1) {
+        lerTexto(msg, buf, sizeof buf);
+        for (char *c = buf; *c; c++) if (*c == ',') *c = '.';
+        v = strtof(buf, &fim);
+        if (fim != buf && *fim == '\0' && v >= 0) return v;
+        printf("Valor invalido. Tente novamente.\n");
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* Operacoes basicas - PRODUTOS                                        */
+/* ------------------------------------------------------------------ */
+
+/* Leitura de um elemento especifico (busca sequencial por ID) */
+static int buscarProduto(int id, Produto *saida) {
+    FILE *f = fopen(ARQ_PRODUTOS, "rb");
+    Produto aux;
+    if (!f) return 0;
+    while (fread(&aux, sizeof aux, 1, f) == 1) {
+        if (aux.id == id) {
+            if (saida) *saida = aux;
+            fclose(f);
+            return 1;
+        }
+    }
+    fclose(f);
+    return 0;
+}
+
+static int proximoIdProduto(void) {
+    FILE *f = fopen(ARQ_PRODUTOS, "rb");
+    Produto aux;
+    int max = 0;
+    if (!f) return 1;
+    while (fread(&aux, sizeof aux, 1, f) == 1)
+        if (aux.id > max) max = aux.id;
+    fclose(f);
+    return max + 1;
+}
+
+/* Escrita de registro novo (no fim do arquivo) */
+static int inserirProduto(const Produto *p) {
+    FILE *f = fopen(ARQ_PRODUTOS, "ab");
+    if (!f) return 0;
+    fwrite(p, sizeof *p, 1, f);
+    fclose(f);
+    return 1;
+}
+
+/* Escrita de atualizacao (sobrescreve o registro que ja existe) */
+static int gravarProduto(const Produto *p) {
+    FILE *f = fopen(ARQ_PRODUTOS, "rb+");
+    Produto aux;
+    if (!f) return 0;
+    while (fread(&aux, sizeof aux, 1, f) == 1) {
+        if (aux.id == p->id) {
+            fseek(f, -(long)sizeof aux, SEEK_CUR);
+            fwrite(p, sizeof *p, 1, f);
+            fclose(f);
+            return 1;
+        }
+    }
+    fclose(f);
+    return 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Operacoes basicas - VENDAS                                          */
+/* ------------------------------------------------------------------ */
+
+static int buscarVenda(int id, Venda *saida) {
+    FILE *f = fopen(ARQ_VENDAS, "rb");
+    Venda aux;
+    if (!f) return 0;
+    while (fread(&aux, sizeof aux, 1, f) == 1) {
+        if (aux.id == id) {
+            if (saida) *saida = aux;
+            fclose(f);
+            return 1;
+        }
+    }
+    fclose(f);
+    return 0;
+}
 
