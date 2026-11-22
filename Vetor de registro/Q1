@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 struct registro {
     int codigo;
@@ -8,12 +9,14 @@ struct registro {
     int quantidade;
 };
 
-int cadastro(struct registro c[40]);
+int total = 0;
+int cadastro(struct registro c[40], int *total);
 int modificar(struct registro c[40]);
 int estoque1(struct registro c[40]);
 int estoque2(struct registro c[40]);
 int vendas(struct registro c[40]);
 int estoque_Zero(struct registro c[40]);
+int estoque_Total(struct registro c[40]);
 
 int main(void) {
     struct registro estoque[40];
@@ -29,31 +32,30 @@ int main(void) {
     while (AR == 0){
         char entrada[10];
         scanf("%s", entrada);
-        if (entrada == "cadastro"){
-            cadastro();
-        if (entrada == "modificar"){
-            modificar();
-        if (entrada == "valor"){
-
+        if (strcmp(entrada, "cadastro")==0){
+            cadastro(estoque, &total);
+        }else if (strcmp(entrada, "comprar")==0){
+            vendas(estoque);
         }
         }
-        }
-    }
 }
 
-int cadastro(struct registro c[40]) {
-    for (int i = 0; i < 40; i ++){
-
+int cadastro(struct registro c[40], int *total) {
+    if (*total >= 40){
+        printf("Limite de cadastros alcançado.");
+    } else{
+    int i = *total;
     printf("Insira o código do objeto a ser cadastrado");
     scanf("%d", &c[i].codigo);
     printf("Insira o nome do objeto");
-    scanf("%s", &c[i].nome);
+    scanf(" %39[^\n]", c[i].nome);
     printf("Insira a descrição do produto");
-    scanf("%s", &c[i].descricao);
+    scanf(" %39[^\n]", c[i].descricao);
     printf("Insira o valor do produto");
-    scanf("%d", &c[i].valor);
-    printf("Insicra a quantidade do produto");
+    scanf("%f", &c[i].valor);
+    printf("Insira a quantidade do produto");
     scanf("%d", &c[i].quantidade);
+    (*total)++;
     }
     return 1;
 }
@@ -61,7 +63,7 @@ int cadastro(struct registro c[40]) {
 int modificar(struct registro c[40]){
     printf("Digite o código do item a ser modificado");
     int i=0;
-    while (i>=0 && i<40){
+    while (i>=0 && i<total){
         if ("%d" == c[i].codigo){
             printf("Insira o número de unidades.");
             scanf("%d", &c[i].quantidade);
@@ -76,9 +78,9 @@ int modificar(struct registro c[40]){
 
 int estoque1(struct registro c[40]) {
     printf("Insira o código de produto:");
-    for(int i=0; i<40; i++){
+    for(int i=0; i<total; i++){
         if ("%d" == c[i].codigo){
-            printf("O produto possui o valor de:", c[i].valor);
+            printf("O produto possui o valor de: %2.f\n", c[i].valor);
         } else {printf("Produto não encontrado.");}
         
         return  1;
@@ -87,7 +89,7 @@ int estoque1(struct registro c[40]) {
 
 int estoque2(struct registro c[40]) {
     printf("Insira o código de produto:");
-    for(int i=0; i<40; i++){
+    for(int i=0; i<total; i++){
         if ("%d" == c[i].codigo){
             printf("O produto possui um estoque de:", c[i].quantidade);
         }else {printf("Produto não encontrado.");}
@@ -99,7 +101,7 @@ int estoque2(struct registro c[40]) {
 
 int vendas(struct registro c[40]) {
     printf("Diga o código do produto vendido:");
-    for (int i=0; i<40; i++) {
+    for (int i=0; i<total; i++) {
         if ("%d" == c[i].codigo){
             printf("Diga a quantidade desejada:");
             int quantidadeAlvo;
@@ -118,15 +120,15 @@ int vendas(struct registro c[40]) {
     }
 
 int estoque_Total(struct registro c[40]){
-    for (int i = 0; i<40; i++){
+    for (int i = 0; i<total; i++){
         printf(c[i].codigo, c[i].descricao);
     }
 }
 
 int estoque_Zero(struct registro c[40]){
-    for (int i = 0; i<40; i++){
+    for (int i = 0; i<total; i++){
         if (c[i].quantidade == 0) {
-            printf(c[i].codigo, c[i].descricao);
+            printf("Código: %d | Descrição: %s\n", c[i].codigo, c[i].descricao);
         }
     }
 }
