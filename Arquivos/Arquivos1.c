@@ -313,8 +313,7 @@ static void cadastrarVenda(void) {
         v.precos[idx] = prod.preco;
         v.qtdItens++;
         prod.estoque -= qtd;
-        gravarProduto(&prod);
-    }
+        gravarProduto(&prod);}
         if (v.qtdItens > 0) {
             inserirVenda(&v);
             printf("Confirmado.\n");
@@ -406,9 +405,8 @@ int main(void) {
         "Escolha uma opcao: "
         );
 
-        if (opcao = lerInt()) {
+        if (opcao = lerInt("")) {
             int c;
-            while ((c = getchar()) != '\n' && c != EOF);
             printf("Entrada invalída : ");
             opcao = -1;
             continue;
