@@ -402,12 +402,12 @@ int main(void) {
         "========================================\n"
         "1 - Cadastrar produto\n"
         "2 - Listar produtos\n"
-        "3 - Buscar produto\n"
-        "4 - Atualizar produto\n"
-        "5 - Remover produto\n"
+        "3 - Atualizar produto\n"
+        "4 - remover produto\n"
+        "5 - registrar venda\n"
         "6 - Registrar venda\n"
-        "7 - Listar vendas\n"
-        "8 - Consultar estoque\n"
+        "7 - buscar vendas\n"
+        "8 - remover venda\n"
         "9 - Relatorio / Resumo\n"
         "0 - Sair\n"
         "----------------------------------------\n"
@@ -418,7 +418,6 @@ int main(void) {
         switch (opcao) {
         case 1 : 
         cadastrarProduto();
-        pausarMenu();
         break;
         case 2 : 
         if (!listarProdutos()) printf("Nenhum produto cadastrado. \n");
@@ -426,15 +425,12 @@ int main(void) {
         break;
         case 3 : 
         atualizarProduto(lerInt("ID do produto : "));
-        pausarMenu();
         break;
         case 4 : 
         removerProduto(lerInt("ID do produto : "));
-        pausarMenu();
         break;
         case 5 : 
         cadastrarVenda();
-        pausarMenu();
         break;
         case 6 : 
         if (!listarVendas()) printf("Nenhuma venda cadastrada. \n");
@@ -450,7 +446,6 @@ int main(void) {
         }
         case 8 : 
         removerVenda(lerInt("ID da venda : "));
-        pausarMenu();
         break;
         case 9 :
         exibirRelatorio();
