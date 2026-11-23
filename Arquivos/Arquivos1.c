@@ -313,7 +313,8 @@ static void cadastrarVenda(void) {
         v.precos[idx] = prod.preco;
         v.qtdItens++;
         prod.estoque -= qtd;
-        gravarProduto(&prod);}
+        gravarProduto(&prod);
+    }
         if (v.qtdItens > 0) {
             inserirVenda(&v);
             printf("Confirmado.\n");
@@ -335,26 +336,83 @@ static void cadastrarProduto(void) {
 
 }
 
+static void exibirRelatorio(void) {
+    FILE *fp = fopen(ARQ_PRODUTOS, "rb");
+    Produto p;
+    int totalProdutos = 0;
+    int totalEstoque = 0;
+
+    printf("\n================ RELATORIO GERAL ================\n");
+    printf("--- ESTOQUE DE PRODUTOS ---\n");
+    if (!fp) {
+        printf("Nenhum arquivo de produtos encontrado.\n");
+    } else {
+        while (fread(&p, sizeof p, 1, fp) == 1) {
+            printf("ID: %d | %s | Preco: %.2f | Estoque: %d\n",
+                   p.id, p.descricao, p.preco, p.estoque);
+            totalProdutos++;
+            totalEstoque += p.estoque;
+        }
+        fclose(fp);
+        printf("Total de tipos de produtos: %d | Unidades em estoque: %d\n",
+               totalProdutos, totalEstoque);
+    }
+
+    FILE *fv = fopen(ARQ_VENDAS, "rb");
+    Venda v;
+    int totalVendas = 0;
+    float faturamentoTotal = 0.0f;
+
+    printf("\n--- VENDAS E FATURAMENTO ---\n");
+    if (!fv) {
+        printf("Nenhum arquivo de vendas encontrado.\n");
+    } else {
+        while (fread(&v, sizeof v, 1, fv) == 1) {
+            float subtotalVenda = 0.0f;
+            for (int i = 0; i < v.qtdItens; i++) {
+                subtotalVenda += v.quantidades[i] * v.precos[i];
+            }
+            printf("Venda #%d | Cliente: %s | Data: %s | Itens: %d | Total: %.2f\n",
+                   v.id, v.cliente, v.data, v.qtdItens, subtotalVenda);
+            totalVendas++;
+            faturamentoTotal += subtotalVenda;
+        }
+        fclose(fv);
+        printf("Total de vendas: %d | Faturamento total: %.2f\n",
+               totalVendas, faturamentoTotal);
+    }
+    printf("=================================================\n");
+}
+
 int main(void) {
-    printf(
-    "\n========================================\n"
-    "      SISTEMA DE ESTOQUE E VENDAS       \n"
-    "========================================\n"
-    "1 - Cadastrar produto\n"
-    "2 - Listar produtos\n"
-    "3 - Buscar produto\n"
-    "4 - Atualizar produto\n"
-    "5 - Remover produto\n"
-    "6 - Registrar venda\n"
-    "7 - Listar vendas\n"
-    "8 - Consultar estoque\n"
-    "9 - Relatorio / Resumo\n"
-    "0 - Sair\n"
-    "----------------------------------------\n"
-    "Escolha uma opcao: "
-);
+    int opcao = -1;
+    
     while (1) {
-        int opcao = lerInt("Escolha uma opção: ");
+        printf(
+        "\n========================================\n"
+        "      SISTEMA DE ESTOQUE E VENDAS       \n"
+        "========================================\n"
+        "1 - Cadastrar produto\n"
+        "2 - Listar produtos\n"
+        "3 - Buscar produto\n"
+        "4 - Atualizar produto\n"
+        "5 - Remover produto\n"
+        "6 - Registrar venda\n"
+        "7 - Listar vendas\n"
+        "8 - Consultar estoque\n"
+        "9 - Relatorio / Resumo\n"
+        "0 - Sair\n"
+        "----------------------------------------\n"
+        "Escolha uma opcao: "
+        );
+
+        if (opcao = lerInt()) {
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            printf("Entrada invalída : ");
+            opcao = -1;
+            continue;
+        }
         switch (opcao) {
         case 1 : 
         cadastrarProduto();
@@ -384,8 +442,14 @@ int main(void) {
         case 8 : 
         removerVenda(lerInt("ID da venda : "));
         break;
+        case 9 :
+        exibirRelatorio();
+        break;
         case 0 : 
         return 0;
+        default :
+        printf("Opção invalída");
+        break;
         }
     }
 }
