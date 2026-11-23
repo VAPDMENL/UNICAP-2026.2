@@ -383,6 +383,15 @@ static void exibirRelatorio(void) {
     printf("=================================================\n");
 }
 
+static void pausarMenu(void) {
+    printf("\nPressione ENTER para voltar ao menu...");
+    fflush(stdout);
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {
+        /* aguarda o ENTER */
+    }
+}
+
 int main(void) {
     int opcao = -1;
     
@@ -409,34 +418,43 @@ int main(void) {
         switch (opcao) {
         case 1 : 
         cadastrarProduto();
+        pausarMenu();
         break;
         case 2 : 
         if (!listarProdutos()) printf("Nenhum produto cadastrado. \n");
+        pausarMenu();
         break;
         case 3 : 
         atualizarProduto(lerInt("ID do produto : "));
+        pausarMenu();
         break;
         case 4 : 
         removerProduto(lerInt("ID do produto : "));
+        pausarMenu();
         break;
         case 5 : 
         cadastrarVenda();
+        pausarMenu();
         break;
         case 6 : 
         if (!listarVendas()) printf("Nenhuma venda cadastrada. \n");
+        pausarMenu();
         break;
         case 7 : {
         Venda v;
         int id = lerInt("ID da venda : " );
         if (buscarVenda(id, &v)) exibirVendaDetalhada(&v);
         else printf("Venda não encontrada.\n");
+        pausarMenu();
         break;
         }
         case 8 : 
         removerVenda(lerInt("ID da venda : "));
+        pausarMenu();
         break;
         case 9 :
         exibirRelatorio();
+        pausarMenu();
         break;
         case 0 : 
         return 0;
