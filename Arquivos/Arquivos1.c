@@ -405,12 +405,7 @@ int main(void) {
         "Escolha uma opcao: "
         );
 
-        if (opcao = lerInt("")) {
-            int c;
-            printf("Entrada invalída : ");
-            opcao = -1;
-            continue;
-        }
+        opcao = lerInt("");      
         switch (opcao) {
         case 1 : 
         cadastrarProduto();
