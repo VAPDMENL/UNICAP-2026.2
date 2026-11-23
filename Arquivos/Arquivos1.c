@@ -405,7 +405,7 @@ int main(void) {
         "3 - Atualizar produto\n"
         "4 - remover produto\n"
         "5 - registrar venda\n"
-        "6 - Registrar venda\n"
+        "6 - listar venda\n"
         "7 - buscar vendas\n"
         "8 - remover venda\n"
         "9 - Relatorio / Resumo\n"
