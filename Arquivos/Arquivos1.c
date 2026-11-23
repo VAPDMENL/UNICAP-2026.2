@@ -336,6 +336,23 @@ static void cadastrarProduto(void) {
 }
 
 int main(void) {
+    printf(
+    "\n========================================\n"
+    "      SISTEMA DE ESTOQUE E VENDAS       \n"
+    "========================================\n"
+    "1 - Cadastrar produto\n"
+    "2 - Listar produtos\n"
+    "3 - Buscar produto\n"
+    "4 - Atualizar produto\n"
+    "5 - Remover produto\n"
+    "6 - Registrar venda\n"
+    "7 - Listar vendas\n"
+    "8 - Consultar estoque\n"
+    "9 - Relatorio / Resumo\n"
+    "0 - Sair\n"
+    "----------------------------------------\n"
+    "Escolha uma opcao: "
+);
     while (1) {
         int opcao = lerInt("Escolha uma opção: ");
         switch (opcao) {
